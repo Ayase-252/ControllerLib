@@ -69,7 +69,10 @@ typedef enum
 #define PID_LIMITER_ONLYLOWER   0x00000008
 #define PID_LIMITER_BOTH        0x0000000C
 #define PID_LIMITER_MASK        0x0000000C
+
 //  
+
+//  Global Function Declaration
 
 //  Initial PID structure
 //  Input:
@@ -143,6 +146,26 @@ void UpdatePID(PID_t *pPID, double actual);
 //  double      the output control signal
 //  WARNING:    MAKE SURE that UpdatePID is called before this function call
 double GetPIDOutput(PID_t *pPID);
+
+//
+
+//  Local Function Declarations
+
+//  Calculate the factors in expression of PID.
+//  Required to call before procedure to calculate output, 
+//  when user changes constants.
+//  Input:
+//  PID_t   *pPID
+//
+void CalculateFactors(PID_t *pPID);
+
+//  Limit output based on setting
+//  Input:
+//  PID_t   *pPID
+//  double  calcResult      Result calculated by PID algorithm   
+//  Output:
+//  double                  Output processed by limiter
+double OutputLimiter(PID_t *pPID, double calcResult);
 
 //  End of File
 #endif

@@ -19,23 +19,6 @@
 
 #include "pid.h"
 
-//  Local Function Declarations
-
-//  Calculate the factors in expression of PID.
-//  Required to call before procedure to calculate output, 
-//  when user changes constants.
-//  Input:
-//  PID_t   *pPID
-//
-void CalculateFactors(PID_t *pPID);
-
-//  Limit output based on setting
-//  Input:
-//  PID_t   *pPID
-//  double  calcResult      Result calculated by PID algorithm   
-//  Output:
-//  double                  Output processed by limiter
-double OutputLimiter(PID_t *pPID, double calcResult);
 
 //  Global Functions
 
@@ -126,7 +109,7 @@ void UpdatePID(PID_t *pPID, double actual)
     errortermk_1 = pPID->factorError_k_1 * pPID->error_k_1;
     errortermk_2 = pPID->factorError_k_2 * pPID->error_k_2;
 
-    result = result + errorterm + errortermk_1 + errortermk_2;
+    result = pPID->output + errorterm + errortermk_1 + errortermk_2;
     
     //  Update output
     pPID->output = OutputLimiter(pPID, result);
