@@ -10,6 +10,7 @@
 //
 //  ===========================================================================
 //                             Revise History
+//
 //  V1.0.0    2015-8-4                        First Version
 //
 //  ===========================================================================
@@ -22,16 +23,17 @@
 //  Struct for target object you want to control with PID
 //  For every object, independent instance of this struct shall be created.
 //  WARNING:    All field SHALL NOT be modified DIRECTLY
-typedef struct {
+typedef struct
+{
     double target;                  //  Control target value
     double output;                  //  PID output control signal
-    
+
     double upperlimit;              //  Upper limit of output signal
     double lowerlimit;              //  Lower limit of output signal
-    
+
     double error_k_1;               //  e[k-1]
     double error_k_2;               //  e[k-2]
-    
+
     double kp;                      //  Proportional constant
     double ti;                      //  Intergal time constant
     double td;                      //  Differential time constant
@@ -40,25 +42,33 @@ typedef struct {
     //  For quick calculation
     //  SHALL NOT MODIFIED DIRECTLY
     //  u[k] = u[k-1] + f_k * e[k] + f_k-1 * e[k-1] + f_k-2 * e[k-2]
-    double factorError_k;         
-    double factorError_k_1;  
+    double factorError_k;
+    double factorError_k_1;
     double factorError_k_2;
-           
+
     int    statusBit;               //  Save some event such as 
                                     //  parameter change, which require 
                                     //  to recalculate the factors
 } PID_t;
 
 //  Mode of PID output limiter
-enum PID_Limiter {
+typedef enum
+{
     inhibit,
     onlyUpperLimiter,
     onlyLowerLimiter,
     both
-};
+} PID_Limiter;
 
 //  MACROs
+#define PID_DIRTY_BIT           0x00000001
+#define PID_INITIAL_BIT         0x00000002
 
+#define PID_LIMITER_INHIBIT     0x00000000
+#define PID_LIMITER_ONLYUPPER   0x00000004
+#define PID_LIMITER_ONLYLOWER   0x00000008
+#define PID_LIMITER_BOTH        0x0000000C
+#define PID_LIMITER_MASK        0x0000000C
 //  
 
 //  Initial PID structure
@@ -102,7 +112,7 @@ void SetPIDSampleTime(PID_t *pPID, double sampleTime);
 //  Input:
 //  PID_t       *pPID
 //  PID_Limiter mode    (inhibit, onlyLowerLimiter, onlyUpperLimiter, both)
-void ConfigurePIDLimiter(PID_t *pPID, PID_Limiter mode)
+void ConfigurePIDLimiter(PID_t *pPID, PID_Limiter mode);
 
 //  Set upper limit. When the output is more then upper limit,
 //  the output would be the limit.
