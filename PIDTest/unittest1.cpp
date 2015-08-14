@@ -1,6 +1,9 @@
 #include "stdafx.h"
 #include "CppUnitTest.h"
-#include "../pid.h"
+extern "C"
+{
+	#include "../pid.h"
+}
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -10,9 +13,11 @@ namespace PIDTest
 	{
 	public:
 		
+        //  Test for limiter
 		TEST_METHOD(UpperLimiter_Function_Test_1)
 		{
 			PID_t testPID;
+			InitPID(&testPID);
 			ConfigurePIDLimiter(&testPID, onlyUpperLimiter);
 			SetPIDUpperLimit(&testPID, 2000);
 			double result = OutputLimiter(&testPID, 3000);
@@ -22,6 +27,7 @@ namespace PIDTest
 		TEST_METHOD(UpperLimiter_Function_Test_2)
 		{
 			PID_t testPID;
+			InitPID(&testPID);
 			ConfigurePIDLimiter(&testPID, onlyUpperLimiter);
 			SetPIDUpperLimit(&testPID, 2000);
 			double result = OutputLimiter(&testPID, 1000);
@@ -40,6 +46,7 @@ namespace PIDTest
 		TEST_METHOD(Lower_Limiter_Function_Test_2)
 		{
 			PID_t testPID;
+			InitPID(&testPID);
 			ConfigurePIDLimiter(&testPID, onlyLowerLimiter);
 			SetPIDLowerLimit(&testPID, -100);
 			double result = OutputLimiter(&testPID, 0);
@@ -49,6 +56,7 @@ namespace PIDTest
 		TEST_METHOD(Limiter_Function_Test_1)
 		{
 			PID_t testPID;
+			InitPID(&testPID);
 			ConfigurePIDLimiter(&testPID, both);
 			SetPIDUpperLimit(&testPID, 200);
 			SetPIDLowerLimit(&testPID, -100);
@@ -59,6 +67,7 @@ namespace PIDTest
 		TEST_METHOD(Limiter_Function_Test_2)
 		{
 			PID_t testPID;
+			InitPID(&testPID);
 			ConfigurePIDLimiter(&testPID, both);
 			SetPIDUpperLimit(&testPID, 200);
 			SetPIDLowerLimit(&testPID, -100);
@@ -69,6 +78,7 @@ namespace PIDTest
 		TEST_METHOD(Limiter_Function_Test_3)
 		{
 			PID_t testPID;
+			InitPID(&testPID);
 			ConfigurePIDLimiter(&testPID, both);
 			SetPIDUpperLimit(&testPID, 200);
 			SetPIDLowerLimit(&testPID, -100);

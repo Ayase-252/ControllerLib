@@ -14,6 +14,8 @@
 //                             Revise History
 //
 //  V1.0.0    2015-8-4                        First Version
+//  V1.0.1    2015-8-15                       Fix bug that the error signal
+//                                            is mistakely calculated
 //
 //  ===========================================================================
 
@@ -104,7 +106,7 @@ void UpdatePID(PID_t *pPID, double actual)
 
 
     //  u[k] = u[k-1] + f_k * e[k] + f_k_1 * e[k-1] + f_k_2 * e[k-2]
-    error = actual - pPID->target;
+    error = pPID->target - actual;
     errorterm = pPID->factorError_k * error;
     errortermk_1 = pPID->factorError_k_1 * pPID->error_k_1;
     errortermk_2 = pPID->factorError_k_2 * pPID->error_k_2;
